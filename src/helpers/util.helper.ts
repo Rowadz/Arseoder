@@ -1,4 +1,5 @@
 import { createConnection, MysqlError } from 'mysql';
+import { ColumnOptions } from '../interfaces/interfaces';
 
 const con = createConnection({
   host: 'localhost',
@@ -19,4 +20,19 @@ export const prmisifyTheQuery = (
       resolve(result);
     });
   });
+};
+
+export const getCorrectFormat = ({
+  type,
+  len,
+  enumValues
+}: ColumnOptions): string => {
+  switch (type) {
+    case 'VARCHAR':
+      return `${type}(${len})`;
+    case 'ENUM':
+      return `${type}(${enumValues.map((s: string) => `'${s}'`).join(', ')})`;
+    default:
+      return type;
+  }
 };
