@@ -40,6 +40,28 @@ Crud.prototype.update = function(
   return prmisifyTheQuery(q, preparedArray);
 };
 
+Crud.prototype.delete = function(whereObj?: WhereConditions): Promise<any> {
+  let delPart = `DELETE FROM ${this.name}`;
+  const preparedArray: Array<string> = [];
+  const wherePart = extractWhereStmt(whereObj, val => {
+    preparedArray.push(val);
+  });
+  return prmisifyTheQuery(`${delPart} ${wherePart}`, preparedArray);
+};
+
+Crud.prototype.select = function(
+  columns?: Array<string>,
+  whereObj?: WhereConditions
+): Promise<any> {
+  const cols = columns ? columns.join(', ') : '*';
+  const preparedArray: Array<string> = [];
+  const wherePart = extractWhereStmt(whereObj, val => {
+    preparedArray.push(val);
+  });
+  console.log(`SELECT ${cols} FROM ${this.name} ${wherePart}`);
+  return prmisifyTheQuery(`SELECT ${cols} FROM ${this.name} ${wherePart}`);
+};
+
 const extractWhereStmt = (
   whereObj: WhereConditions,
   cb: (val: any) => void
@@ -62,13 +84,3 @@ const loopThroughObj = (obj: any, cb: (key: string, values: any) => any) => {
     }
   }
 };
-
-const test = new (Crud as any)();
-
-test.update(
-  { name: 'rowad' },
-  {
-    id: { value: 1 },
-    name: { value: 'polo', opertation: 'AND' }
-  }
-);
