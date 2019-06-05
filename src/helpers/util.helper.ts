@@ -5,7 +5,7 @@ const con = createConnection({
   host: 'localhost',
   user: 'root',
   password: 'root',
-  database: 'orm'
+  database: 'orm_3'
 });
 
 export const prmisifyTheQuery = (

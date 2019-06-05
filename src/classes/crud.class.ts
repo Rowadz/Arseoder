@@ -17,7 +17,8 @@ Crud.prototype.create = function(data: any): Promise<any> {
     .fill('?')
     .join(', ');
   return prmisifyTheQuery(
-    `INSERT INTO ${this.name} (${columns.join(', ')}) VALUES (${qMarks})`
+    `INSERT INTO ${this.name} (${columns.join(', ')}) VALUES (${qMarks})`,
+    values
   );
 };
 
@@ -36,7 +37,6 @@ Crud.prototype.update = function(
     preparedArray.push(val);
   });
   const q = `UPDATE ${this.name} ${setPart} ${wherePart}`;
-  console.log(q, preparedArray);
   return prmisifyTheQuery(q, preparedArray);
 };
 
@@ -58,8 +58,10 @@ Crud.prototype.select = function(
   const wherePart = extractWhereStmt(whereObj, val => {
     preparedArray.push(val);
   });
-  console.log(`SELECT ${cols} FROM ${this.name} ${wherePart}`);
-  return prmisifyTheQuery(`SELECT ${cols} FROM ${this.name} ${wherePart}`);
+  return prmisifyTheQuery(
+    `SELECT ${cols} FROM ${this.name} ${wherePart}`,
+    preparedArray
+  );
 };
 
 const extractWhereStmt = (

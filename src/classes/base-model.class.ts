@@ -13,13 +13,13 @@ BaseModel.prototype.addPk = function(
   name: string,
   { autoIncrement, type }: ColumnOptions
 ): Model {
-  const autoInc = autoIncrement ? 'AUTO_INCREMET' : '';
+  const autoInc = autoIncrement ? 'AUTO_INCREMENT' : '';
   this.cols.push(`${name} ${type} ${autoInc} PRIMARY KEY`);
   return this;
 };
 
 BaseModel.prototype.addCol = function(name: string, col: ColumnOptions): Model {
-  const defaultVal = col.default ? `DEFAULT ${col.default}` : '';
+  const defaultVal = col.default ? `DEFAULT '${col.default}'` : '';
   const isNull = col.allowNull ? 'NULL' : 'NOT NULL';
   this.cols.push(`${name} ${getCorrectFormat(col)} ${isNull} ${defaultVal}`);
   return this;

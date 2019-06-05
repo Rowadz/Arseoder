@@ -5,8 +5,8 @@ export interface Model extends BaseModel {
 export interface BaseModel extends Crud {
   table: string;
   cols: Array<string>;
-  addPk: (name: string, col: any) => Model;
-  addCol: (name: string, col: any) => Model;
+  addPk: (name: string, col: ColumnOptions) => Model;
+  addCol: (name: string, col: ColumnOptions) => Model;
   buildTable: () => Model;
   createTable: () => Promise<any>;
 }
